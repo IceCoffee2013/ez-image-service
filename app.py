@@ -55,7 +55,7 @@ def imageOpt():
     # delete both images on server after s3 upload
     url = AWS_PUBLIC_DNS + '/images/processed/' + fileNameExt.split("/")[-1]
 
-    # s3_upload()
+    # s3_upload() TODO
     return createResponse(201, {'url': url})
 
 

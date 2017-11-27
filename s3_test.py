@@ -17,12 +17,11 @@ transfer = S3Transfer(client)
 bucket = 'ezswitch-image'
 key = 'test-remote.jpg'
 data_name = 'test.jpg'
+prefix_url = 'https://s3-ap-southeast-2.amazonaws.com'
 
-rr = transfer.upload_file(data_name, bucket, key,
+transfer.upload_file(data_name, bucket, key,
                      extra_args={'ACL': 'public-read'})
 
-print('rr', rr)
-
-file_url = '%s/%s/%s' % (client.meta.endpoint_url, bucket, key)
+file_url = '%s/%s/%s' % (prefix_url, bucket, key)
 
 print('URL:', file_url)

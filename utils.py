@@ -2,6 +2,7 @@ import boto3
 from boto3.s3.transfer import S3Transfer
 
 bucket_name = 'ezswitch-image'
+prefix_url = 'https://s3-ap-southeast-2.amazonaws.com'
 
 
 def s3_upload(data_path, save_path):
@@ -17,7 +18,7 @@ def s3_upload(data_path, save_path):
     except Exception:
         return
 
-    file_url = '%s/%s/%s' % (client.meta.endpoint_url, bucket_name, save_path)
+    file_url = '%s/%s/%s' % (prefix_url, bucket_name, save_path)
 
     print('URL:', file_url)
     return file_url
