@@ -1,13 +1,13 @@
 # USAGE
-import cv2
-import subprocess
-import imutils as imgUitl
 import re
+import subprocess
 from os import path
 
+import cv2
+
+from imagelib import imutils
 from imagelib.errors.error import ContourNotFoundError, NotABillError
-from imagelib.pyimagesearch import imutils
-from imagelib.pyimagesearch.transform import four_point_transform
+from imagelib.transform import four_point_transform
 
 VALIDBILL_MIN_CHAR = 1300
 
@@ -108,7 +108,7 @@ class CamImageScanner:
     def __rotateImage__(self, imagePath, angle):
         # load the image from disk
         image = cv2.imread(imagePath)
-        return imgUitl.rotate_bound(image, angle)
+        return imutils.rotate_bound(image, angle)
 
     def validateBill(self):
         fileName = self.outputPath.split("/")[-1]
