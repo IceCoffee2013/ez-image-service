@@ -16,6 +16,11 @@ from utils import s3_upload
 AWS_PUBLIC_DNS = "http://ec2-52-62-225-98.ap-southeast-2.compute.amazonaws.com"  # frank
 app = Flask(__name__)
 
+handler = RotatingFileHandler('./log/app.log', maxBytes=10000, backupCount=3)
+logger = logging.getLogger('__name__')
+logger.setLevel(logging.ERROR)
+logger.addHandler(handler)
+
 
 def download(url):
     fileNameExt = url.split("/")[-1]
@@ -105,12 +110,13 @@ def exceptions(e):
 
 # run the app.
 if __name__ == "__main__":
-    # The maxBytes is set to this number, in order to demonstrate the generation of multiple log files (backupCount).
-    handler = RotatingFileHandler('./log/app.log', maxBytes=10000, backupCount=3)
-    # getLogger('__name__') - decorators loggers to file / werkzeug loggers to stdout
-    # getLogger('werkzeug') - werkzeug loggers to file / nothing to stdout
-    logger = logging.getLogger('__name__')
-    logger.setLevel(logging.ERROR)
-    logger.addHandler(handler)
-    # app.debug = True
+    # # The maxBytes is set to this number, in order to demonstrate the generation of multiple log files (backupCount).
+    # handler = RotatingFileHandler('./log/app.log', maxBytes=10000, backupCount=3)
+    # # getLogger('__name__') - decorators loggers to file / werkzeug loggers to stdout
+    # # getLogger('werkzeug') - werkzeug loggers to file / nothing to stdout
+    # logger = logging.getLogger('__name__')
+    # logger.setLevel(logging.ERROR)
+    # logger.addHandler(handler)
+    # # app.debug = True
+
     app.run()
