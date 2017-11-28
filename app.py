@@ -12,7 +12,8 @@ import traceback
 # Change PUBLIC DNS Name
 from utils import s3_upload
 
-AWS_PUBLIC_DNS = "http://ec2-13-210-137-102.ap-southeast-2.compute.amazonaws.com"
+# AWS_PUBLIC_DNS = "http://ec2-13-210-137-102.ap-southeast-2.compute.amazonaws.com"  # production environment
+AWS_PUBLIC_DNS = "http://ec2-52-62-225-98.ap-southeast-2.compute.amazonaws.com"  # frank
 app = Flask(__name__)
 
 
