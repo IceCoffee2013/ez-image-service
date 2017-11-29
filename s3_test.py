@@ -11,7 +11,14 @@ import boto3
 # s3.Bucket('ezswitch-bill').put_object(Key='test.jpg', Body=data)
 from boto3.s3.transfer import S3Transfer
 
+ACCESS_ID = 'AKIAIUEFGZGHJ3QN5VFA'
+ACCESS_KEY = 'v5KVifZ/H0FcCA5OEj6x/KBNCYTZyFV7+JeYQkfH'
+
+# client = boto3.client('s3', aws_access_key_id=ACCESS_ID,
+#          aws_secret_access_key=ACCESS_KEY)
+
 client = boto3.client('s3')
+
 transfer = S3Transfer(client)
 
 bucket = 'ezswitch-image'
