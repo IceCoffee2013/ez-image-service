@@ -34,7 +34,7 @@ def download(url):
     response = requests.get(url, stream=True)
     with open(fPath, 'wb') as out_file:
         shutil.copyfileobj(response.raw, out_file)
-    print("downloaded file")
+    # print("downloaded file")
     return fPath
 
 
@@ -42,11 +42,11 @@ def download(url):
 def imageOpt():
     if not request.json:
         abort(400)
-    print("download image from: ", request.json['url'])
+    # print("download image from: ", request.json['url'])
     # download image
     fileNameExt = download(request.json['url'])
     file = fileNameExt.split("/")[-1]
-    print('images/processed/' + file)
+    # print('images/processed/' + file)
     url = AWS_PUBLIC_DNS + '/images/processed/' + fileNameExt.split("/")[-1]
     cam = CamImageScanner(fileNameExt, 'images/processed/')
 
@@ -131,14 +131,14 @@ def s3_upload(data_path, save_path):
         transfer.upload_file(data_path, bucket_name, save_path,
                              extra_args={'ACL': 'public-read'})
     except Exception as e:
-        print(e)
+        # print(e)
         ts = strftime('[%Y-%b-%d %H:%M]')
         logger.error('%s %s\n', ts, e)
         return
 
     file_url = '%s/%s/%s' % (prefix_url, bucket_name, save_path)
 
-    print('URL:', file_url)
+    # print('URL:', file_url)
     return file_url
 
 
