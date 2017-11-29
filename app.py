@@ -36,13 +36,17 @@ def download(url):
 def imageOpt():
     if not request.json:
         abort(400)
-    print("download image from: " + request.json['url'])
+    print("download image from: ", request.json['url'])
     # download image
     fileNameExt = download(request.json['url'])
     file = fileNameExt.split("/")[-1]
     print('images/processed/' + file)
     url = AWS_PUBLIC_DNS + '/images/processed/' + fileNameExt.split("/")[-1]
     cam = CamImageScanner(fileNameExt, 'images/processed/')
+
+    img_host_path = 'images/processed/' + fileNameExt.split("/")[-1]
+    img_remote_name = file.split('.')[0]
+
     try:
         cam.processImage()
     except ContourNotFoundError:
@@ -51,17 +55,19 @@ def imageOpt():
         cam.checkAndRotate()
         cam.checkAndRotate()
     except:
+        url = s3_upload(img_host_path, file)
         return createResponse(400, {'err': 'Orientation Detection Fail, possibly not a bill', 'url': url})
     try:
         cam.validateBill()
     except NotABillError:
+        url = s3_upload(img_host_path, file)
         return createResponse(400, {'err': 'not a bill', 'url': url})
     except Exception:
+        url = s3_upload(img_host_path, file)
         return createResponse(400, {'err': 'ocr cmd error', 'url': url})
     # delete both images on server after s3 upload
-    url = AWS_PUBLIC_DNS + '/images/processed/' + fileNameExt.split("/")[-1]
 
-    # s3_upload() TODO
+    url = s3_upload(img_host_path, file)
     return createResponse(201, {'url': url})
 
 
