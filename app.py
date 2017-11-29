@@ -14,6 +14,8 @@ import traceback
 # Change PUBLIC DNS Name
 # AWS_PUBLIC_DNS = "http://ec2-13-210-137-102.ap-southeast-2.compute.amazonaws.com"  # production environment
 AWS_PUBLIC_DNS = "http://ec2-52-62-225-98.ap-southeast-2.compute.amazonaws.com"  # frank
+ACCESS_ID = 'AKIAIQIVGIH4PJHATQKQ'
+ACCESS_KEY = '/f4hE5Qp5AXiAMwJngx9AOTQDSMPQkChwvIxomM0'
 
 bucket_name = 'ezswitch-image'
 prefix_url = 'https://s3-ap-southeast-2.amazonaws.com'
@@ -119,7 +121,8 @@ def exceptions(e):
 
 
 def s3_upload(data_path, save_path):
-    client = boto3.client('s3')
+    client = boto3.client('s3', aws_access_key_id=ACCESS_ID,
+         aws_secret_access_key=ACCESS_KEY)
     transfer = S3Transfer(client)
 
     try:
