@@ -125,7 +125,8 @@ def s3_upload(data_path, save_path):
     try:
         transfer.upload_file(data_path, bucket_name, save_path,
                              extra_args={'ACL': 'public-read'})
-    except Exception:
+    except Exception as e:
+        print(e)
         return
 
     file_url = '%s/%s/%s' % (prefix_url, bucket_name, save_path)
