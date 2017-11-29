@@ -15,7 +15,7 @@ import traceback
 # AWS_PUBLIC_DNS = "http://ec2-13-210-137-102.ap-southeast-2.compute.amazonaws.com"  # production environment
 AWS_PUBLIC_DNS = "http://ec2-52-62-225-98.ap-southeast-2.compute.amazonaws.com"  # frank
 ACCESS_ID = 'AKIAIQIVGIH4PJHATQKQ'
-ACCESS_KEY = '/f4hE5Qp5AXiAMwJngx9AOTQDSMPQkChwvIxomM0'
+ACCESS_KEY = '/f4hE5Qp5AXiAMwJngx9AOTQDSMPQkChwvIxomM0-----'
 
 bucket_name = 'ezswitch-image'
 prefix_url = 'https://s3-ap-southeast-2.amazonaws.com'
@@ -130,6 +130,8 @@ def s3_upload(data_path, save_path):
                              extra_args={'ACL': 'public-read'})
     except Exception as e:
         print(e)
+        ts = strftime('[%Y-%b-%d %H:%M]')
+        logger.error('%s %s\n', ts, e)
         return
 
     file_url = '%s/%s/%s' % (prefix_url, bucket_name, save_path)
