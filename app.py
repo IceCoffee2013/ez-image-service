@@ -1,3 +1,5 @@
+import boto3
+from boto3.s3.transfer import S3Transfer
 from flask import Flask, abort, request, send_from_directory
 import shutil
 import requests
@@ -10,10 +12,12 @@ from time import strftime
 import traceback
 
 # Change PUBLIC DNS Name
-from utils import s3_upload
-
 # AWS_PUBLIC_DNS = "http://ec2-13-210-137-102.ap-southeast-2.compute.amazonaws.com"  # production environment
 AWS_PUBLIC_DNS = "http://ec2-52-62-225-98.ap-southeast-2.compute.amazonaws.com"  # frank
+
+bucket_name = 'ezswitch-image'
+prefix_url = 'https://s3-ap-southeast-2.amazonaws.com'
+
 app = Flask(__name__)
 
 handler = RotatingFileHandler('./log/app.log', maxBytes=10000, backupCount=3)
@@ -112,6 +116,22 @@ def exceptions(e):
                  request.full_path,
                  tb)
     return "Internal Server Error", 500
+
+
+def s3_upload(data_path, save_path):
+    client = boto3.client('s3')
+    transfer = S3Transfer(client)
+
+    try:
+        transfer.upload_file(data_path, bucket_name, save_path,
+                             extra_args={'ACL': 'public-read'})
+    except Exception:
+        return
+
+    file_url = '%s/%s/%s' % (prefix_url, bucket_name, save_path)
+
+    print('URL:', file_url)
+    return file_url
 
 
 # run the app.
