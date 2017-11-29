@@ -14,8 +14,8 @@ import traceback
 # Change PUBLIC DNS Name
 # AWS_PUBLIC_DNS = "http://ec2-13-210-137-102.ap-southeast-2.compute.amazonaws.com"  # production environment
 AWS_PUBLIC_DNS = "http://ec2-52-62-225-98.ap-southeast-2.compute.amazonaws.com"  # frank
-ACCESS_ID = 'AKIAIUEFGZGHJ3QN5VFA'
-ACCESS_KEY = 'v5KVifZ/H0FcCA5OEj6x/KBNCYTZyFV7+JeYQkfH'
+ACCESS_ID = 'AKIAJN4OKMIOGYUMHNFQ'
+ACCESS_KEY = 'nvzgphKfRJoKg33pNcZzogi/OLdsYmey0FjHJl0Y'
 
 bucket_name = 'ezswitch-image'
 prefix_url = 'https://s3-ap-southeast-2.amazonaws.com'
