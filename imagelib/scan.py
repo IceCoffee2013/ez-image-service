@@ -35,8 +35,9 @@ class CamImageScanner:
         gray = cv2.GaussianBlur(image, (5, 5), 0)
         edged = cv2.Canny(gray, 55, 200)
 
-        # cv2.imshow("Image", image)
-        # cv2.imshow("Edged", edged)
+        cv2.imshow("Image", image)
+        cv2.imshow("Edged", edged)
+        cv2.imshow("Gray", gray)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
 
@@ -46,6 +47,7 @@ class CamImageScanner:
         (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
         cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:5]
         # loop over the contours
+        print('cnts', len(cnts))
         screenCnt = []
         for c in cnts:
             # approximate the contour
@@ -57,7 +59,7 @@ class CamImageScanner:
                 screenCnt = approx
                 break
         if len(screenCnt) != 4:
-            raise ContourNotFoundError('not find contour')
+            raise ContourNotFoundError('not find contour ' + str(len(screenCnt)))
 
         # cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 2)
         # cv2.imshow("Outline", image)
@@ -136,9 +138,23 @@ class CamImageScanner:
             # print("not a valid bill photo length: " + str(len(textOfFile)))
             return False
 
+    def check_size(self, raw_path, processed_path, ratio=0.4):
+        # print(raw_path, processed_path)
+        img1 = cv2.imread(raw_path)
+        sp1 = img1.shape
+        area1 = sp1[0] * sp1[1]
+        img2 = cv2.imread(processed_path)
+        sp2 = img2.shape
+        area2 = sp2[0] * sp2[1]
+        tmp_ratio = area2 / area1
+        print(sp1, area1, sp2, area2, tmp_ratio)
+        if tmp_ratio < ratio:
+            return False
+        return True
+
 
 if __name__ == "__main__":
-    x = CamImageScanner('../images/raw/IMG_7205.jpg', '../images/processed/')
+    x = CamImageScanner('../images/raw/image-test-1.jpg', '../images/processed/')
     x.processImage()
     x.checkAndRotate()
     x.validateBill()

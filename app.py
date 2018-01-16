@@ -13,7 +13,7 @@ import traceback
 
 # Change PUBLIC DNS Name
 # AWS_PUBLIC_DNS = "http://ec2-13-210-137-102.ap-southeast-2.compute.amazonaws.com"  # production environment
-AWS_PUBLIC_DNS = "http://ec2-52-62-225-98.ap-southeast-2.compute.amazonaws.com"  # frank
+AWS_PUBLIC_DNS = "http://ezswitch.com.au:81"  # azure
 ACCESS_ID = 'AKIAJN4OKMIOGYUMHNFQ'
 ACCESS_KEY = 'nvzgphKfRJoKg33pNcZzogi/OLdsYmey0FjHJl0Y'
 
@@ -42,11 +42,11 @@ def download(url):
 def imageOpt():
     if not request.json:
         abort(400)
-    # print("download image from: ", request.json['url'])
+    print("download image from: ", request.json['url'])
     # download image
     fileNameExt = download(request.json['url'])
     file = fileNameExt.split("/")[-1]
-    # print('images/processed/' + file)
+    print('images/processed/' + file)
     url = AWS_PUBLIC_DNS + '/images/processed/' + fileNameExt.split("/")[-1]
     cam = CamImageScanner(fileNameExt, 'images/processed/')
 
@@ -57,23 +57,23 @@ def imageOpt():
         cam.processImage()
     except ContourNotFoundError:
         return createResponse(400, {'err': 'fail to find edge'})
-    try:
-        cam.checkAndRotate()
-        cam.checkAndRotate()
-    except:
-        url = s3_upload(img_host_path, file)
-        return createResponse(400, {'err': 'Orientation Detection Fail, possibly not a bill', 'url': url})
+    # try:
+    #     cam.checkAndRotate()
+    #     cam.checkAndRotate()
+    # except:
+    #     # url = s3_upload(img_host_path, file)
+    #     return createResponse(400, {'err': 'Orientation Detection Fail, possibly not a bill', 'url': url})
     try:
         cam.validateBill()
     except NotABillError:
-        url = s3_upload(img_host_path, file)
+        # url = s3_upload(img_host_path, file)
         return createResponse(400, {'err': 'not a bill', 'url': url})
     except Exception:
-        url = s3_upload(img_host_path, file)
+        # url = s3_upload(img_host_path, file)
         return createResponse(400, {'err': 'ocr cmd error', 'url': url})
     # delete both images on server after s3 upload
 
-    url = s3_upload(img_host_path, file)
+    # url = s3_upload(img_host_path, file)
     return createResponse(201, {'url': url})
 
 
