@@ -13,7 +13,7 @@ import traceback
 
 # Change PUBLIC DNS Name
 # AWS_PUBLIC_DNS = "http://ec2-13-210-137-102.ap-southeast-2.compute.amazonaws.com"  # production environment
-AWS_PUBLIC_DNS = "http://ec2-52-62-225-98.ap-southeast-2.compute.amazonaws.com"  # frank
+AWS_PUBLIC_DNS = "http://ezswitch.com.au:81"  # azure
 ACCESS_ID = 'AKIAJN4OKMIOGYUMHNFQ'
 ACCESS_KEY = 'nvzgphKfRJoKg33pNcZzogi/OLdsYmey0FjHJl0Y'
 
