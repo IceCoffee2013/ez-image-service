@@ -9,7 +9,7 @@ from imagelib import imutils
 from imagelib.errors.error import ContourNotFoundError, NotABillError
 from imagelib.transform import four_point_transform
 
-VALIDBILL_MIN_CHAR = 1300
+VALIDBILL_MIN_CHAR = 600
 
 
 class CamImageScanner:
@@ -28,7 +28,7 @@ class CamImageScanner:
         ratio = image.shape[0] / 500.0
         orig = image.copy()
         image = imutils.resize(image, height=500)
-        # print("STEP 1: Edge Detection")
+        print("STEP 1: Edge Detection")
         # convert the image to grayscale, blur it, and find edges
         # in the image
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -40,7 +40,7 @@ class CamImageScanner:
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()
 
-        # print("STEP 2: Find contours of paper")
+        print("STEP 2: Find contours of paper")
         # find the contours in the edged image, keeping only the
         # largest ones, and initialize the screen contour
         (_, cnts, _) = cv2.findContours(edged.copy(), cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
@@ -79,7 +79,7 @@ class CamImageScanner:
         # if (ratio1 > 0.80 or ratio1 < 0.60) and (ratio2 > 0.80 or ratio2 < 0.60):
         #     raise NotA4Error('Cropped Image is not a A4 paper: height: ' + str(height) + ' width: ' + str(width))
         cv2.imwrite(self.outputPath, warped)
-        # print("Finished Transformation")
+        print("Finished Transformation")
         return self.outputPath
 
     def checkAndRotate(self, debugPath= None):
@@ -93,18 +93,17 @@ class CamImageScanner:
             pattern = r"Orientation in degrees:\s(\d+)"
             matches = re.findall(pattern, x.decode())
             angle = int(matches[0])
-            # print('angle: ' + str(angle))
+            print('angle: ' + str(angle))
         except Exception as e:
-            # print("Transformation Angle detection failed")
+            print("Transformation Angle detection failed")
             raise e
-        # print("start roate")
+        print("start rotate")
         if angle != 0:
             img = self.__rotateImage__(self.outputPath, angle)
             cv2.imwrite(self.outputPath, img)
-            # print("done roate")
+            print("done rotate")
         else:
-            pass
-            # print("No need to rotate")
+            print("No need to rotate")
 
     def __rotateImage__(self, imagePath, angle):
         # load the image from disk
@@ -115,7 +114,7 @@ class CamImageScanner:
         fileName = self.outputPath.split("/")[-1]
         fileName += '.txt'
         outputTxtFile = path.join(self.outputParentPath, self.outputFileName)
-        # print("running text ocr to validate bill")
+        print("running text ocr to validate bill")
         try:
             subprocess.check_output(['tesseract', self.outputPath,
                                      outputTxtFile, '--lang=eng'], stderr=subprocess.STDOUT)
@@ -123,6 +122,7 @@ class CamImageScanner:
             if self.openTxtFileAndCheck(outputTxtFile) != True:
                 raise NotABillError('Image size after auto trop is not A4')
         except Exception as e:
+            print(e)
             raise e
         return False
 
@@ -133,7 +133,7 @@ class CamImageScanner:
             if len(textOfFile) >= VALIDBILL_MIN_CHAR:
                 # print("A valid bill photo")
                 return True
-            # print("not a valid bill photo length: " + str(len(textOfFile)))
+            print("not a valid bill photo length: " + str(len(textOfFile)))
             return False
 
 

@@ -20,6 +20,10 @@ change to no sudo user and use aws instructions to install nvm, node
 nocache pip install
 install gcc
 
+sudo apt-get install tesseract-ocr
+sudo apt-get install libpng12-dev
+sudo apt-get install libjpeg62-dev
+
 EC2 Credential
 account alias: ‎212252083097
 user name: dev-ops
