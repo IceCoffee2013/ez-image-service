@@ -30,6 +30,7 @@ user name: dev-ops
 user password: EzSwitch2017
 
 gunicorn app:app -b localhost:8000 -w 2 --threads 4
+gunicorn app:app -b localhost:8000 -w 2 --threads 4 > console.log &
 
 
 https://www.matthealy.com.au/blog/post/deploying-flask-to-amazon-web-services-ec2/
